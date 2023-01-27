@@ -1,0 +1,79 @@
+package com.api.service.impl;
+
+import com.api.domain.Users;
+import com.api.domain.dto.UsersDTO;
+import com.api.repositories.UsersRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.modelmapper.ModelMapper;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.Optional;
+
+import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.when;
+
+@SpringBootTest
+class UserServiceImplTest {
+    public static final int ID = 1;
+    public static final String NOME = "Douglas";
+    public static final String EMAIL = "douglas@email.com";
+    public static final String PASSWD = "123";
+    @InjectMocks
+    private UserServiceImpl service;
+
+    @Mock
+    private UsersRepository repository;
+
+    @Mock
+    private ModelMapper mapper;
+
+    private Users users;
+    private UsersDTO usersDTO;
+    private Optional<Users> optionalUsers;
+
+    @BeforeEach
+    void setup(){
+        MockitoAnnotations.openMocks(this);
+        startUsers();
+    }
+
+    @Test
+    void whenFindByIdThenReturnAnUserInstance() {
+        when(repository.findById(anyInt())).thenReturn(optionalUsers);
+        Users response = service.findById(ID);
+
+        assertNotNull(response);
+        assertEquals(Users.class, response.getClass());
+        assertEquals(ID, response.getId());
+        assertEquals(NOME, response.getNome());
+        assertEquals(EMAIL, response.getEmail());
+    }
+
+    @Test
+    void findAll() {
+    }
+
+    @Test
+    void create() {
+    }
+
+    @Test
+    void update() {
+    }
+
+    @Test
+    void delete() {
+    }
+
+    private void startUsers(){
+        users = new Users(ID, NOME, EMAIL, PASSWD);
+        usersDTO = new UsersDTO(ID, NOME, EMAIL, PASSWD);
+        optionalUsers = Optional.of(new Users(ID, NOME, EMAIL, PASSWD));
+    }
+}
