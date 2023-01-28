@@ -3,6 +3,7 @@ package com.api.service.impl;
 import com.api.domain.Users;
 import com.api.domain.dto.UsersDTO;
 import com.api.repositories.UsersRepository;
+import com.api.service.exceptions.DataIntegratyViolationException;
 import com.api.service.exceptions.ObjectNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,8 +18,8 @@ import java.util.Optional;
 
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -95,6 +96,20 @@ class UserServiceImplTest {
         assertEquals(NOME, response.getNome());
         assertEquals(EMAIL, response.getEmail());
         assertEquals(PASSWD, response.getPasswd());
+    }
+
+    @Test
+    void whenCreateThenReturnDataIntegrationViolation() {
+        when(repository.findByEmail(anyString())).thenReturn(optionalUsers);
+
+        try {
+            optionalUsers.get().setId(2);
+            service.create(usersDTO);
+            fail("Era esperada uma falha");
+        } catch (Exception ex){
+            assertEquals(DataIntegratyViolationException.class, ex.getClass());
+        }
+
     }
 
     @Test
