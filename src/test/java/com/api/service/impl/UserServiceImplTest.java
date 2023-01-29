@@ -127,6 +127,20 @@ class UserServiceImplTest {
     }
 
     @Test
+    void whenUpdateThenReturnDataIntegrationViolation() {
+        when(repository.findByEmail(anyString())).thenReturn(optionalUsers);
+
+        try {
+            optionalUsers.get().setId(2);
+            service.create(usersDTO);
+            fail("Era esperada uma falha");
+        } catch (Exception ex){
+            assertEquals(DataIntegratyViolationException.class, ex.getClass());
+        }
+
+    }
+
+    @Test
     void delete() {
     }
 
