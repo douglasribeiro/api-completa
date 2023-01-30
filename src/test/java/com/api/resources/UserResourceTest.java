@@ -104,6 +104,7 @@ class UserResourceTest {
         assertEquals(UsersDTO.class, response.getBody().getClass());
 
         assertEquals(ID, response.getBody().getId());
+        assertEquals(NOME, response.getBody().getNome());
     }
 
     @Test
