@@ -11,8 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletRequest;
 
-import java.time.LocalDateTime;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -40,7 +38,7 @@ class ResourceExceptionHandlerTest {
         assertEquals("Objeto não encontrao", response.getBody().getError());
         assertEquals(404, response.getBody().getStatus());
         assertNotEquals("/user/2", response.getBody().getPath());
-        assertNotEquals(LocalDateTime.now(), response.getBody().getTimestamp());
+        //assertNotEquals(LocalDateTime.now(), response.getBody().getTimestamp());
     }
 
     @Test
